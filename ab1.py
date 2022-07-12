@@ -1,4 +1,4 @@
-from utils import _16_bit
+from utils import int_to_16_bit
 from directory import Directory
 from typing import List, Optional
 
@@ -103,7 +103,7 @@ def write_ab1(
 
         # -- Header --
         ab1.write("ABIF".encode())
-        ab1.write(_16_bit(VERSION_NUMBER))
+        ab1.write(int_to_16_bit(VERSION_NUMBER))
 
         # -- Root directory --
         root_dir = Directory.root(num_dirs=len(dirs))
@@ -111,7 +111,7 @@ def write_ab1(
 
         # -- 47 2-byte integer buffer --
         for _ in range(47):
-            ab1.write(_16_bit(0))
+            ab1.write(int_to_16_bit(0))
 
         # -- Data --
         for d in dirs:

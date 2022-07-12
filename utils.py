@@ -1,7 +1,7 @@
 from typing import List
 
 
-def _16_bit(num: int) -> bytes:
+def int_to_16_bit(num: int) -> bytes:
     """
     Converts Python integer to 16-bit instance.
     :param num: Python integer
@@ -10,7 +10,7 @@ def _16_bit(num: int) -> bytes:
     return num.to_bytes(2, "big")
 
 
-def _32_bit(num: int) -> bytes:
+def int_to_32_bit(num: int) -> bytes:
     """
     Converts Python integer to 32-bit instance
     :param num: Python integer

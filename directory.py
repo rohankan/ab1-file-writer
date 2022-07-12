@@ -1,6 +1,6 @@
 import os
 
-from utils import _16_bit, _32_bit, short_list, pascal_string
+from utils import int_to_16_bit, int_to_32_bit, short_list, pascal_string
 from typing import NamedTuple, BinaryIO, List, Optional, Union
 
 
@@ -34,23 +34,23 @@ class Directory(NamedTuple):
             raise ValueError("Directory tag_name must be 4 characters!")
 
         ab1.write(self.tag_name.encode())
-        ab1.write(_32_bit(self.tag_num))
-        ab1.write(_16_bit(self.element_type_code))
-        ab1.write(_16_bit(self.element_size))
-        ab1.write(_32_bit(self.num_elements))
-        ab1.write(_32_bit(self.data_size))
+        ab1.write(int_to_32_bit(self.tag_num))
+        ab1.write(int_to_16_bit(self.element_type_code))
+        ab1.write(int_to_16_bit(self.element_size))
+        ab1.write(int_to_32_bit(self.num_elements))
+        ab1.write(int_to_32_bit(self.data_size))
 
         # -- Data offset --
         if self.data_size > 4:
-            ab1.write(_32_bit(offset))
+            ab1.write(int_to_32_bit(offset))
         else:
-            ab1.write(_32_bit(0))
+            ab1.write(int_to_32_bit(0))
             ab1.seek(-4, os.SEEK_CUR)
             ab1.write(self.data)
             ab1.seek(0, os.SEEK_END)
 
         # -- Reserved / data handle --
-        reserved = _32_bit(0)
+        reserved = int_to_32_bit(0)
         ab1.write(reserved)
 
     @staticmethod
@@ -147,7 +147,10 @@ class Directory(NamedTuple):
 
     @staticmethod
     def dye_signal_strength(
-        strength_1: int, strength_2: int, strength_3: int, strength_4: int
+        strength_1: int,
+        strength_2: int,
+        strength_3: int,
+        strength_4: int,
     ) -> "Directory":
         return Directory(
             tag_name="S/N%",
